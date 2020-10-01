@@ -106,7 +106,7 @@ module.exports = {
           //       "Your account is not activated"
           //     );
           //   } else {
-          const token = jwt.sign(payload, "RAHASIA", { expiresIn: "24h" });
+          const token = jwt.sign(payload, "RAHASIA", { expiresIn: "1h" });
           payload = { ...payload, token };
           return helper.response(response, 200, "Success login", payload);
           //   }
@@ -144,7 +144,7 @@ module.exports = {
           from: '"Pellet"',
           to: user_email,
           subject: "Pellet - Forgot Password",
-          html: `your code is <b>${keys}</b>`,
+          html: `<a href="http://localhost:8080/reset?keys=${keys}">Click Here To Change Password</a>`,
           //   `<a href="http://localhost:8080/setpassword?keys=${keys}">Click Here To Change Password</a>`,
         }),
           function (error) {
@@ -152,7 +152,7 @@ module.exports = {
               return helper.response(response, 400, "Email not sent !");
             }
           };
-        return helper.response(response, 200, "Email has been sent !");
+        return helper.response(response, 200, "Email has been sent !", keys);
       } else {
         return helper.response(response, 400, "Email is not registered !");
       }
