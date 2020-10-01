@@ -136,8 +136,8 @@ module.exports = {
           port: 465,
           secure: true,
           auth: {
-            user: process.env.USER,
-            pass: process.env.PASS,
+            user: "oriza.sativa.matang@gmail.com",
+            pass: "Oriza.sativa8",
           },
         });
         await transporter.sendMail({
@@ -185,7 +185,7 @@ module.exports = {
         const minutesDifference = Math.floor(difference / 1000 / 60);
         if (minutesDifference > 5) {
           const data = {
-            user_key: "",
+            user_key: 0,
             user_updated_at: new Date(),
           };
           await changePassword(data, email);
@@ -223,7 +223,7 @@ module.exports = {
           const salt = bcrypt.genSaltSync(10);
           const encryptPassword = bcrypt.hashSync(user_password, salt);
           setData.user_password = encryptPassword;
-          setData.user_key = "";
+          setData.user_key = 0;
         }
         const result = await changePassword(setData, email);
         return helper.response(
@@ -236,6 +236,7 @@ module.exports = {
         return helper.response(response, 404, `Invalid key`);
       }
     } catch (error) {
+      console.log(error);
       return helper.response(response, 404, "Bad Request", error);
     }
   },

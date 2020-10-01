@@ -20,7 +20,7 @@ module.exports = {
   checkUser: (email) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * from user where user_email = ?",
+        "SELECT * FROM user WHERE user_email = ?",
         email,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
