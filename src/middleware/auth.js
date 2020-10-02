@@ -1,23 +1,37 @@
 const jwt = require("jsonwebtoken");
-const helper = require("../helper");
+const helper = require("../helper/index");
 
 module.exports = {
-  authUser: (request, response, next) => {
+  authorization: (request, response, next) => {
     let token = request.headers.authorization;
     if (token) {
       token = token.split(" ")[1];
-      jwt.verify(token, "SECRET", (error, result) => {
+      jwt.verify(token, "RAHASIA", (error, result) => {
+        console.log(error);
         if (
           (error && error.name === "JsonWebTokenError") ||
           (error && error.name === "TokenExpiredError")
         ) {
-          return helper.response(response, 403, error.message);
+          console.log("Yang ini A");
+          console.log(error.expiredAt);
+          return helper.response(response, 400, error.message);
         } else {
-          next();
+          if (result.user_status !== 0) {
+            console.log(result);
+            request.token = result;
+            next();
+          } else {
+            console.log(result);
+            return helper.response(
+              response,
+              400,
+              "Invalid action, status inactive"
+            );
+          }
         }
       });
     } else {
-      return helper.response(response, 400, "Please login first");
+      return helper.response(response, 400, "Invalid token, Login required");
     }
   },
 };

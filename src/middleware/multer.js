@@ -1,12 +1,18 @@
 const multer = require("multer");
-const path = require("path");
-const helper = require("../helper");
-
+const helper = require("../helper/index");
 const storage = multer.diskStorage({
-  destination: (request, file, callback) => {
-    callback(null, "./uploads");
+  destination: function (request, file, callback) {
+    console.log(file.mimetype);
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+      callback(null, "./uploads/");
+    } else {
+      return callback(
+        new Error("Invalid image format, only jpeg / png are allowed")
+      );
+    }
   },
-  filename: (request, file, callback) => {
+  filename: function (request, file, callback) {
+    console.log(file);
     callback(
       null,
       new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
@@ -14,31 +20,18 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (request, file, callback) => {
-  const ext = path.extname(file.originalname);
-  if (ext !== ".png" && ext !== ".jpg" && ext !== ".jpeg") {
-    return callback(new Error("Only images (PNG/JPG/JPEG) are allowed"), false);
-  } else {
-    callback(null, true);
-  }
-};
-const maxSize = 2097152;
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: maxSize },
-}).single("user_img");
-
+let upload = multer({
+  storage: storage,
+  limits: { fileSize: 1 * 1024 * 1024 },
+}).single("image");
 const uploadFilter = (request, response, next) => {
-  upload(request, response, function (err) {
-    if (err instanceof multer.MulterError) {
-      console.log(err);
-      return helper.response(response, 400, err.message);
-    } else if (err) {
-      return helper.response(response, 400, err.message);
+  upload(request, response, function (error) {
+    if (error instanceof multer.MulterError) {
+      return helper.response(response, 400, error.message);
+    } else if (error) {
+      return helper.response(response, 400, error.message);
     }
     next();
   });
 };
-
 module.exports = uploadFilter;
