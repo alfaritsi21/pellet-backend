@@ -1,6 +1,6 @@
-// const router = require("express").Router();
+const router = require("express").Router();
 
-// router.post("/");
-// router.post("/midtrans-notif");
+router.post("/");
+router.post("/midtrans-notif");
 
-// module.exports = router;
+module.exports = router;
