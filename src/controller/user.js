@@ -10,6 +10,7 @@ const {
   checkKey,
   changePassword,
 } = require("../model/user");
+const { patchUser } = require("../model/profile");
 
 module.exports = {
   register: async (request, response) => {
@@ -238,6 +239,19 @@ module.exports = {
     } catch (error) {
       console.log(error);
       return helper.response(response, 404, "Bad Request", error);
+    }
+  },
+  patchNewPin: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { pin } = request.body;
+      const setData = {
+        user_pin: pin,
+      };
+      const result = await patchUser(setData, id);
+      return helper.response(response, 200, "Pin created", result);
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
     }
   },
 };
