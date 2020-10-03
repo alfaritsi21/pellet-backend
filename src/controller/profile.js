@@ -164,11 +164,7 @@ module.exports = {
           result
         );
       } else {
-        return helper.response(
-          response,
-          404,
-          `Username : ${search_name} Not Found`
-        );
+        return helper.response(response, 404, `${search_name} Not Found`);
       }
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);

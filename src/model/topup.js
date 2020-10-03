@@ -17,24 +17,4 @@ module.exports = {
       });
     });
   },
-  postTransaction: (setData) => {
-    return new Promise((resolve, reject) => {
-      connection.query(
-        "INSERT INTO transaction SET ?",
-        setData,
-        (error, result) => {
-          if (!error) {
-            const newResult = {
-              id: result.insertId,
-              ...setData,
-            };
-            delete newResult.user_password;
-            resolve(newResult);
-          } else {
-            resolve(new Error(error));
-          }
-        }
-      );
-    });
-  },
 };
