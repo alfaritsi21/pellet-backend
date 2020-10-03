@@ -9,6 +9,7 @@ const {
   checkNumber,
   checkKey,
   changePassword,
+  searchUserName,
 } = require("../model/user");
 
 module.exports = {

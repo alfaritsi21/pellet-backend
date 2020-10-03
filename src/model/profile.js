@@ -60,4 +60,14 @@ module.exports = {
       );
     });
   },
+  searchUserName: (search_name) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT * FROM user  WHERE first_name LIKE '%${search_name}%' OR last_name LIKE '%${search_name}%'`,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
 };

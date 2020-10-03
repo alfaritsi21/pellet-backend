@@ -3,6 +3,7 @@ const {
   getUserById,
   getUserCount,
   patchUser,
+  searchUserName,
   //   deleteProfile,
 } = require("../model/profile");
 const fs = require("fs");
@@ -147,6 +148,29 @@ module.exports = {
       }
     } catch (error) {
       console.log(error);
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  searchByUserName: async (request, response) => {
+    try {
+      const { search_name } = request.body;
+      const result = await searchUserName(search_name);
+
+      if (result.length > 0) {
+        return helper.response(
+          response,
+          200,
+          "Success Search Username",
+          result
+        );
+      } else {
+        return helper.response(
+          response,
+          404,
+          `Username : ${search_name} Not Found`
+        );
+      }
+    } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
