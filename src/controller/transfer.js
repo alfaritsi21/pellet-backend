@@ -30,7 +30,7 @@ module.exports = {
       };
       const updateSaldoSender = await updateSaldo(newSaldoSender, user_id);
       const newSaldoTarget = {
-        user_saldo: parseInt(getSaldoTarget) + tf_nominal,
+        user_saldo: Number(getSaldoTarget) + Number(tf_nominal),
       };
       const updateSaldoTarget = await updateSaldo(newSaldoTarget, target_id);
       // console.log(result);

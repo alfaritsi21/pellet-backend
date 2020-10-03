@@ -4,7 +4,7 @@ module.exports = {
   getAllUsers: (search, sort, limit, offset) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT user_email,user_name,first_name,last_name,user_phone,user_img,user_saldo FROM user WHERE user_name LIKE ? ORDER BY ${sort} LIMIT ? OFFSET ?`,
+        `SELECT user_id, user_email,user_name,first_name,last_name,user_phone,user_img,user_saldo FROM user WHERE user_name LIKE ? ORDER BY ${sort} LIMIT ? OFFSET ?`,
         [search, limit, offset],
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
