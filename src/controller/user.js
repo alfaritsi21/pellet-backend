@@ -8,9 +8,11 @@ const {
   checkUser,
   checkNumber,
   checkKey,
+  checkPinById,
   changePassword,
   searchUserName,
 } = require("../model/user");
+const { patchUser, checkPassById, getUserById } = require("../model/profile");
 
 module.exports = {
   register: async (request, response) => {
@@ -239,6 +241,125 @@ module.exports = {
     } catch (error) {
       console.log(error);
       return helper.response(response, 404, "Bad Request", error);
+    }
+  },
+  patchNewPin: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { pin } = request.body;
+      const setData = {
+        user_pin: pin,
+      };
+      const result = await patchUser(setData, id);
+      return helper.response(response, 200, "Pin created", result);
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  checkUserPin: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { user_pin } = request.body;
+      const checkUser = await getUserById(id);
+      const result = await checkPinById(id);
+      console.log(result[0].user_pin);
+      if (checkUser.length > 0) {
+        if (user_pin == result[0].user_pin) {
+          return helper.response(
+            response,
+            200,
+            `You can change your pin`,
+            result
+          );
+        } else {
+          return helper.response(response, 400, "Your pin isn't match");
+        }
+      } else {
+        return helper.response(
+          response,
+          404,
+          `User Pin By Id : ${id} Not Found`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  newPin: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { user_pin } = request.body;
+      if (request.body.user_pin === "") {
+        return helper.response(response, 404, "Input your new pin");
+      } else if (user_pin.length < 6) {
+        return helper.response(response, 404, "Pin must be 6 characters");
+      }
+      const checkUser = await getUserById(id);
+      if (checkUser.length > 0) {
+        const setData = {
+          user_pin,
+        };
+        const result = await patchUser(setData, id);
+        return helper.response(response, 200, "Success Pin Updated", result);
+      } else {
+        return helper.response(response, 400, `User By Id: ${id} Not Found`);
+      }
+    } catch (error) {
+      console.log(error);
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  newPassword: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { current_password, user_password } = request.body;
+      if (request.body.current_password === "") {
+        return helper.response(response, 404, "Input your current password");
+      } else if (request.body.user_password === "") {
+        return helper.response(response, 404, "Input your new password");
+      } else if (user_password.length < 8 || user_password.length > 16) {
+        return helper.response(
+          response,
+          400,
+          "Password Must be include 8-16 characters"
+        );
+      } else if (request.body.confirm_password !== request.body.user_password) {
+        return helper.response(response, 400, "Password didn't match");
+      }
+      const checkUser = await getUserById(id);
+      if (checkUser.length > 0) {
+        const getPass = await checkPassById(id);
+        // console.log(getPass[0].user_password);
+        if (getPass[0].user_password.length > 0) {
+          const checkPass = bcrypt.compareSync(
+            current_password,
+            getPass[0].user_password
+          );
+          if (checkPass) {
+            const salt = bcrypt.genSaltSync(10);
+            const encryptPassword = bcrypt.hashSync(user_password, salt);
+            const setData = {
+              user_password: encryptPassword,
+            };
+            const result = await patchUser(setData, id);
+            return helper.response(
+              response,
+              200,
+              "Success Password Updated",
+              result
+            );
+          } else {
+            return helper.response(response, 400, "Wrong Password !");
+          }
+        } else {
+          return helper.response(response, 404, "Check your password again");
+        }
+      } else {
+        return helper.response(response, 404, `User By Id: ${id} Not Found`);
+      }
+    } catch (error) {
+      console.log(error);
+      return helper.response(response, 400, "Bad Request", error);
     }
   },
 };
