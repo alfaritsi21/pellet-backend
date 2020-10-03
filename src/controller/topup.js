@@ -1,7 +1,8 @@
 const helper = require("../helper/index.js");
-const { postTopup, postTransaction } = require("../model/topup");
+const { postTopup } = require("../model/topup");
 const { checkNumber } = require("../model/user");
 const { patchUser } = require("../model/profile");
+const { postTransaction } = require("../model/transfer");
 
 module.exports = {
   postTopup: async (request, response) => {
