@@ -11,31 +11,49 @@ const qs = require("querystring");
 module.exports = {
   addTansfer: async (request, response) => {
     try {
-      const { user_id, target_id, tf_nominal, tf_desc } = request.body;
+      const { user, target, nominal, desc } = request.body;
+
       const setData = {
-        user_id,
-        target_id,
-        tf_nominal,
-        tf_desc,
+        user_id: user,
+        target_id: target,
+        tf_nominal: nominal,
+        tf_desc: desc,
         tf_created_at: new Date(),
         tf_status: "success",
       };
       const result = await postTransfer(setData);
-      const getSaldoSender = await getUserSaldo(user_id);
-      const getSaldoTarget = await getUserSaldo(target_id);
+      const setData2 = {
+        user_id: user,
+        target_id: target,
+        trans_type: "Transfer",
+        trans_nominal: nominal,
+        created_at: new Date(),
+        trans_status: "success",
+      };
+      console.log(setData2);
 
-      console.log(getSaldoSender);
+      const addTransaction = await postTransaction(setData2);
+      const getSaldoSender = await getUserSaldo(user);
+      const getSaldoTarget = await getUserSaldo(target);
+
+      // console.log(getSaldoSender);
       const newSaldoSender = {
-        user_saldo: parseInt(getSaldoSender) - tf_nominal,
+        user_saldo: parseInt(getSaldoSender) - nominal,
       };
-      const updateSaldoSender = await updateSaldo(newSaldoSender, user_id);
+      const updateSaldoSender = await updateSaldo(newSaldoSender, user);
       const newSaldoTarget = {
-        user_saldo: Number(getSaldoTarget) + Number(tf_nominal),
+        user_saldo: Number(getSaldoTarget) + Number(nominal),
       };
-      const updateSaldoTarget = await updateSaldo(newSaldoTarget, target_id);
+      const updateSaldoTarget = await updateSaldo(newSaldoTarget, target);
       // console.log(result);
 
-      return helper.response(response, 201, "Transfer Success", setData);
+      return helper.response(
+        response,
+        201,
+        "Transfer Success",
+        setData,
+        setData2
+      );
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
     }

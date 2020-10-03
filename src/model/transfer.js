@@ -28,7 +28,6 @@ module.exports = {
     });
   },
   postTransfer: (setData) => {
-    console.log(setData);
     return new Promise((resolve, reject) => {
       connection.query(
         "INSERT INTO transfer SET ?",
