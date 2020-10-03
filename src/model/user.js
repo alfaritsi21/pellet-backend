@@ -17,6 +17,26 @@ module.exports = {
       });
     });
   },
+  postPin: (setData, id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "INSERT INTO user SET ?",
+        [setData, id],
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              id: result.insertId,
+              ...setData,
+            };
+            delete newResult.user_password;
+            resolve(newResult);
+          } else {
+            resolve(new Error(error));
+          }
+        }
+      );
+    });
+  },
   checkUser: (email) => {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -33,6 +53,17 @@ module.exports = {
       connection.query(
         "SELECT * from user where user_phone = ?",
         phone,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
+  checkPinById: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT user_pin from user where user_id = ?",
+        id,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
         }

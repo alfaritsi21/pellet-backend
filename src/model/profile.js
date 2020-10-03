@@ -60,4 +60,23 @@ module.exports = {
       );
     });
   },
+  checkPassById: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT user_password FROM user WHERE user_id = ?",
+        id,
+        (error, result) => {
+          if (!error) {
+            result.map((value) => {
+              //   delete value.user_password;
+              delete value.user_key;
+            });
+            resolve(result);
+          } else {
+            reject(new Error(error));
+          }
+        }
+      );
+    });
+  },
 };
