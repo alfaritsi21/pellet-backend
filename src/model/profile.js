@@ -91,4 +91,22 @@ module.exports = {
       );
     });
   },
+  deletePhone: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE user SET opt_phone = '' WHERE user_id = ?",
+        id,
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              id: id,
+            };
+            resolve(newResult);
+          } else {
+            reject(new Error(error));
+          }
+        }
+      );
+    });
+  },
 };
