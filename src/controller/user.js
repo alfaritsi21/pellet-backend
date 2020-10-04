@@ -147,8 +147,7 @@ module.exports = {
           from: '"Pellet"',
           to: user_email,
           subject: "Pellet - Forgot Password",
-          html: `your code is <b>${keys}</b>`,
-          //   `<a href="http://localhost:8080/setpassword?keys=${keys}">Click Here To Change Password</a>`,
+          html: `<a href="http://localhost:8080/reset?keys=${keys}">Click Here To Change Password</a>`,
         }),
           function (error) {
             if (error) {

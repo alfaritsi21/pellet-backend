@@ -4,6 +4,7 @@ const {
   getIncomeTransactionPerDay,
   getExpenseTransactionTotal,
   getExpenseTransactionPerDay,
+  getTransact,
 } = require("../model/transaction");
 const fs = require("fs");
 const helper = require("../helper/index");
@@ -107,6 +108,25 @@ module.exports = {
         return helper.response(response, 404, `Expense doesn't exist`);
       }
     } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  getTransact: async (request, response) => {
+    try {
+      const { user_id, date_from, date_to } = request.body;
+      const result = await getTransact(user_id, date_from, date_to);
+      if (result.length > 0) {
+        return helper.response(
+          response,
+          200,
+          "Success Get Transaction",
+          result
+        );
+      } else {
+        return helper.response(response, 404, `Transaction Not Found`);
+      }
+    } catch (error) {
+      console.log(error);
       return helper.response(response, 400, "Bad Request", error);
     }
   },
