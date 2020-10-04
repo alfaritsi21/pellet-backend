@@ -8,6 +8,7 @@ const user = require("./routes/user");
 const payment = require("./routes/payment");
 const topup = require("./routes/topup");
 const transfer = require("./routes/transfer");
+const transaction = require("./routes/transaction");
 
 // route.use("/product", product);
 // route.use("/category", category);
@@ -17,5 +18,6 @@ route.use("/user", user);
 route.use("/payment", payment);
 route.use("/topup", topup);
 route.use("/transfer", transfer);
+route.use("/transaction", transaction);
 
 module.exports = route;
