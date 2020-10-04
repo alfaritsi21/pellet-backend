@@ -4,8 +4,10 @@ const {
   getUserCount,
   patchUser,
   searchUserName,
-  //   deleteProfile,
+  deletePhone,
 } = require("../model/profile");
+
+// const { postUser } = require("../model/user");
 const fs = require("fs");
 const helper = require("../helper/index");
 const qs = require("querystring");
@@ -165,6 +167,53 @@ module.exports = {
         );
       } else {
         return helper.response(response, 404, `${search_name} Not Found`);
+      }
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  addPhone: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { opt_phone } = request.body;
+      const setData = {
+        opt_phone,
+      };
+      if (setData.opt_phone === "") {
+        return helper.response(response, 404, ` input your phone number`);
+      } else if (
+        setData.opt_phone.length < 10 ||
+        setData.opt_phone.length > 12
+      ) {
+        return helper.response(response, 400, "Invalid phone number");
+      } else {
+        const result = await patchUser(setData, id);
+        return helper.response(
+          response,
+          201,
+          "Success add optional phone number",
+          result
+        );
+      }
+    } catch (error) {
+      console.log;
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  deleteOptPhone: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const checkId = await getUserById(id);
+      if (checkId.length > 0) {
+        const result = await deletePhone(id);
+        return helper.response(
+          response,
+          201,
+          "Your phone number deleted",
+          result
+        );
+      } else {
+        return helper.response(response, 404, ` Not Found`);
       }
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
