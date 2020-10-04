@@ -20,7 +20,7 @@ module.exports = {
       user_saldo: Number(nominal) + Number(checkUser[0].user_saldo),
     };
     const setData3 = {
-      user_id,
+      user_id: 1,
       target_id: user_id,
       trans_type: "Top up",
       trans_nominal: nominal,

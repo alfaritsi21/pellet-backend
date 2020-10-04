@@ -8,9 +8,9 @@ const {
 } = require("../controller/transaction");
 
 router.get("/", getTransactionUser);
-router.get("/income", getIncomeTotal);
-router.get("/income/day", getIncomePerDay);
-router.get("/expense", getExpenseTotal);
-router.get("/expense/day", getExpensePerDay);
+router.post("/income", getIncomeTotal);
+router.post("/income/day", getIncomePerDay);
+router.post("/expense", getExpenseTotal);
+router.post("/expense/day", getExpensePerDay);
 
 module.exports = router;
