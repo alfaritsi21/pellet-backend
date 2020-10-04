@@ -4,8 +4,7 @@ module.exports = {
   getTransactionById: (user, target, date_from, date_to) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT * FROM transaction LEFT JOIN user ON transaction.target_id = user.user_id  WHERE transaction.user_id = ${user} OR transaction.user_id = ${user} AND created_at >= "${date_from}" AND created_at <= "${date_to}" ORDER BY created_at ASC`,
-        // `SELECT * FROM transaction LEFT JOIN user ON transaction.user_id = user.user_id  WHERE ((transaction.user_id = ${user} AND target_id = ${target}) OR (transaction.user_id = ${target} AND target_id = ${user})) AND (created_at >= "${date_from}" AND created_at <= "${date_to}") ORDER BY created_at ASC`,
+        `SELECT * FROM transaction LEFT JOIN user ON transaction.user_id = user.user_id  WHERE ((transaction.user_id = ${user} AND target_id = ${target}) OR (transaction.user_id = ${target} AND target_id = ${user})) AND (created_at >= "${date_from}" AND created_at <= "${date_to}") ORDER BY created_at ASC`,
         (error, result) => {
           !error ? resolve(result) : reject(new Error(error));
         }
