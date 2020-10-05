@@ -2,12 +2,20 @@ const helper = require("../helper/index.js");
 const midTransClient = require("midtrans-client");
 
 const { createPayment } = require("../model/payment");
-const { postTopup } = require("../model/topup");
+const { postTopup, getAllTopup } = require("../model/topup");
 const { checkNumber } = require("../model/user");
 const { patchUser } = require("../model/profile");
 const { postTransaction } = require("../model/transfer");
 
 module.exports = {
+  getTopupData: async (request, response) => {
+    try {
+      const data = await getAllTopup();
+      return helper.response(response, 200, "Success Get Topup Data !", data);
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
   postPayment: async (request, response) => {
     try {
       // ==========NOMIDTRANS============
