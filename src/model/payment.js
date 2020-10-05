@@ -1,4 +1,5 @@
 const midTransClient = require("midtrans-client");
+const connection = require("../config/mysql");
 
 module.exports = {
   createPayment: (id_topup, nominal) => {
@@ -31,11 +32,11 @@ module.exports = {
         });
     });
   },
-  postTransaction: (setData2) => {
+  postTransaction: (setData) => {
     return new Promise((resolve, reject) => {
       connection.query(
         "INSERT INTO transaction SET ?",
-        setData2,
+        setData,
         (error, result) => {
           if (!error) {
             const res = { result };
