@@ -1,7 +1,13 @@
 const helper = require("../helper/index.js");
 const midTransClient = require("midtrans-client");
 
-const { createPayment } = require("../model/payment");
+const {
+  createPayment,
+  postTransaction,
+  postTransfer,
+  updateSaldo,
+  getUserSaldo,
+} = require("../model/payment");
 const {
   postTopup,
   getAllTopup,
@@ -10,12 +16,6 @@ const {
 } = require("../model/topup");
 const { checkNumber } = require("../model/user");
 const { patchUser } = require("../model/profile");
-const {
-  postTransaction,
-  postTransfer,
-  updateSaldo,
-  getUserSaldo,
-} = require("../model/transfer");
 
 module.exports = {
   getTopupData: async (request, response) => {
@@ -115,21 +115,22 @@ module.exports = {
             };
             const result = await postTopup(setData);
             const setData2 = {
+              trans_id: order_id,
               user_id: 1,
               target_id: 7,
-              trans_type: "Transfer",
+              trans_type: "Top Up",
               trans_nominal: gross_amount,
-              created_at: new transaction_time(),
+              created_at: transaction_time,
               trans_status: transaction_status,
             };
             const addTransaction = await postTransaction(setData2);
 
-            const getSaldo = await getUserSaldo(target_id);
+            // const getSaldo = await getUserSaldo(target_id);
 
-            const newSaldo = {
-              user_saldo: Number(getSaldo) + Number(gross_amount),
-            };
-            const updateUserSaldo = await updateSaldo(newSaldo, target_id);
+            // const newSaldo = {
+            //   user_saldo: Number(getSaldo) + Number(gross_amount),
+            // };
+            // const updateUserSaldo = await updateSaldo(newSaldo, target_id);
 
             return helper.response(
               response,
