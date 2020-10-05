@@ -108,12 +108,29 @@ module.exports = {
 
             const setData = {
               topup_id: order_id,
-              user_id: 1,
+              user_id: 7,
               topup_nominal: gross_amount,
               created_at: transaction_time,
               topup_status: transaction_status,
             };
             const result = await postTopup(setData);
+            const setData2 = {
+              user_id: 1,
+              target_id: 7,
+              trans_type: "Transfer",
+              trans_nominal: gross_amount,
+              created_at: new transaction_time(),
+              trans_status: transaction_status,
+            };
+            const addTransaction = await postTransaction(setData2);
+
+            const getSaldo = await getUserSaldo(target_id);
+
+            const newSaldo = {
+              user_saldo: Number(getSaldo) + Number(gross_amount),
+            };
+            const updateUserSaldo = await updateSaldo(newSaldo, target_id);
+
             return helper.response(
               response,
               200,
