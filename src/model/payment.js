@@ -31,11 +31,11 @@ module.exports = {
         });
     });
   },
-  postTransaction: (setData) => {
+  postTransaction: (setData2) => {
     return new Promise((resolve, reject) => {
       connection.query(
         "INSERT INTO transaction SET ?",
-        setData,
+        setData2,
         (error, result) => {
           if (!error) {
             const res = { result };

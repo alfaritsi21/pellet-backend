@@ -115,7 +115,6 @@ module.exports = {
             };
             const result = await postTopup(setData);
             const setData2 = {
-              trans_id: order_id,
               user_id: 1,
               target_id: 7,
               trans_type: "Top Up",
