@@ -37,9 +37,9 @@ module.exports = {
     }
   },
   postMidtransNotif: async (request, response) => {
-    console.log("halo123");
+    // console.log("halo123");
     // console.log("123arqi");
-    const { user_id, user_phone, nominal } = request.body;
+    // const { user_id, user_phone, nominal } = request.body;
     let snap = new midTransClient.Snap({
       isProduction: false,
       serverKey: "SB-Mid-server-HUqP4K69c5VLR3DURHKmoGpD",
@@ -67,43 +67,62 @@ module.exports = {
             // TODO set transaction status on your databaase to 'success'
           }
         } else if (transactionStatus == "settlement") {
-          const setData = {
-            user_id,
-            topup_nominal: nominal,
-            created_at: new Date(),
-          };
-
-          const checkUser = await checkNumber(user_phone);
-          const setData2 = {
-            user_saldo: Number(nominal) + Number(checkUser[0].user_saldo),
-          };
-          const setData3 = {
-            user_id: 1,
-            target_id: user_id,
-            trans_type: "Top up",
-            trans_nominal: nominal,
-            created_at: new Date(),
-            trans_status: chance === 1 ? "success" : null,
-          };
           try {
-            if (checkUser.length > 0) {
-              const result = await postTopup(setData);
-              const result2 = await patchUser(setData2, user_id);
-              const result3 = await postTransaction(setData3);
-              return helper.response(
-                response,
-                200,
-                "Top up success",
-                result,
-                result2,
-                result3
-              );
-            } else {
-              return helper.response(response, 400, "Invalid phone number");
-            }
+            const {
+              order_id,
+              gross_amount,
+              transaction_time,
+              transaction_status,
+            } = request.body;
+
+            const setData = {
+              topup_id: order_id,
+              topup_nominal: gross_amount,
+              created_at: transaction_time,
+              topup_status: transaction_status,
+            };
+            const result = await postTopup(setData);
+            return helper.response(
+              response,
+              200,
+              "Success POST from MIDTRANS",
+              setData
+            );
           } catch (error) {
             return helper.response(response, 400, "Bad Request", error);
           }
+
+          // const checkUser = await checkNumber(user_phone);
+          // const setData2 = {
+          //   user_saldo: Number(nominal) + Number(checkUser[0].user_saldo),
+          // };
+          // const setData3 = {
+          //   user_id: 1,
+          //   target_id: user_id,
+          //   trans_type: "Top up",
+          //   trans_nominal: nominal,
+          //   created_at: new Date(),
+          //   trans_status: chance === 1 ? "success" : null,
+          // };
+          // try {
+          //   if (checkUser.length > 0) {
+          //     const result = await postTopup(setData);
+          //     const result2 = await patchUser(setData2, user_id);
+          //     const result3 = await postTransaction(setData3);
+          //     return helper.response(
+          //       response,
+          //       200,
+          //       "Top up success",
+          //       result,
+          //       result2,
+          //       result3
+          //     );
+          //   } else {
+          //     return helper.response(response, 400, "Invalid phone number");
+          //   }
+          // } catch (error) {
+          //   return helper.response(response, 400, "Bad Request", error);
+          // }
           // TODO set transaction status on your databaase to 'success'
           // [model 1] UPDATE STATUS KE DATABASE dengan status berhasil
           // const updateStatusResult = await modelUpdateStatusResult(orderId, transactionStatus)
