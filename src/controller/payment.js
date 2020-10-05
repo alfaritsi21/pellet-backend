@@ -2,16 +2,47 @@ const helper = require("../helper/index.js");
 const midTransClient = require("midtrans-client");
 
 const { createPayment } = require("../model/payment");
-const { postTopup, getAllTopup } = require("../model/topup");
+const {
+  postTopup,
+  getAllTopup,
+  getAllUser,
+  getAllTransaction,
+} = require("../model/topup");
 const { checkNumber } = require("../model/user");
 const { patchUser } = require("../model/profile");
-const { postTransaction } = require("../model/transfer");
+const {
+  postTransaction,
+  postTransfer,
+  updateSaldo,
+  getUserSaldo,
+} = require("../model/transfer");
 
 module.exports = {
   getTopupData: async (request, response) => {
     try {
       const data = await getAllTopup();
       return helper.response(response, 200, "Success Get Topup Data !", data);
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  getUserData: async (request, response) => {
+    try {
+      const data = await getAllUser();
+      return helper.response(response, 200, "Success Get User Data !", data);
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  getTransactionData: async (request, response) => {
+    try {
+      const data = await getAllTransaction();
+      return helper.response(
+        response,
+        200,
+        "Success Get Transaction Data !",
+        data
+      );
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
     }
@@ -77,7 +108,7 @@ module.exports = {
 
             const setData = {
               topup_id: order_id,
-              user_id: 7,
+              user_id: 1,
               topup_nominal: gross_amount,
               created_at: transaction_time,
               topup_status: transaction_status,

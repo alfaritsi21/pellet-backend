@@ -12,6 +12,28 @@ module.exports = {
       });
     });
   },
+  getAllUser: () => {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM user", (error, result) => {
+        if (!error) {
+          resolve(result);
+        } else {
+          resolve(new Error(error));
+        }
+      });
+    });
+  },
+  getAllTransaction: () => {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM transaction", (error, result) => {
+        if (!error) {
+          resolve(result);
+        } else {
+          resolve(new Error(error));
+        }
+      });
+    });
+  },
   postTopup: (setData) => {
     return new Promise((resolve, reject) => {
       connection.query("INSERT INTO topup SET ?", setData, (error, result) => {
