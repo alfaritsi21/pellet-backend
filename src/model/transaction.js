@@ -26,6 +26,7 @@ module.exports = {
       connection.query(
         `SELECT SUM(trans_nominal) as income, DATE_FORMAT(created_at, '%Y-%m-%d') as date FROM transaction WHERE DATE(created_at) > "${date}" AND target_id = ${user} GROUP BY DATE(created_at)`,
         (error, result) => {
+          console.log(result);
           !error ? resolve(result) : reject(new Error(error));
         }
       );

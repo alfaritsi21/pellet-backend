@@ -20,7 +20,6 @@ module.exports = {
         date_from,
         date_to
       );
-      console.log(result);
       if (result.length > 0) {
         return helper.response(
           response,
@@ -39,7 +38,6 @@ module.exports = {
     try {
       const { date, user } = request.body;
       const result = await getIncomeTransactionTotal(date, user);
-      console.log(result);
       if (result.length > 0) {
         return helper.response(
           response,
@@ -58,7 +56,6 @@ module.exports = {
     try {
       const { date, user } = request.body;
       const result = await getIncomeTransactionPerDay(date, user);
-      console.log(result);
       if (result.length > 0) {
         return helper.response(
           response,
@@ -77,7 +74,6 @@ module.exports = {
     try {
       const { date, user } = request.body;
       const result = await getExpenseTransactionTotal(date, user);
-      console.log(result);
       if (result.length > 0) {
         return helper.response(
           response,
@@ -96,7 +92,6 @@ module.exports = {
     try {
       const { date, user } = request.body;
       const result = await getExpenseTransactionPerDay(date, user);
-      console.log(result);
       if (result.length > 0) {
         return helper.response(
           response,
