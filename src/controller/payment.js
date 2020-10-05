@@ -77,6 +77,7 @@ module.exports = {
 
             const setData = {
               topup_id: order_id,
+              user_id: 7,
               topup_nominal: gross_amount,
               created_at: transaction_time,
               topup_status: transaction_status,
