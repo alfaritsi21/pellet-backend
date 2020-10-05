@@ -1,17 +1,6 @@
 const connection = require("../config/mysql");
 
 module.exports = {
-  getAllTopup: () => {
-    return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM topup", (error, result) => {
-        if (!error) {
-          resolve(result);
-        } else {
-          resolve(new Error(error));
-        }
-      });
-    });
-  },
   postTopup: (setData) => {
     return new Promise((resolve, reject) => {
       connection.query("INSERT INTO topup SET ?", setData, (error, result) => {
