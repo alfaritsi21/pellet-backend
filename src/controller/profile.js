@@ -7,7 +7,7 @@ const {
   deletePhone,
 } = require("../model/profile");
 
-// const { postUser } = require("../model/user");
+// const { checkNumber } = require("../model/user");
 const fs = require("fs");
 const helper = require("../helper/index");
 const qs = require("querystring");
@@ -113,13 +113,24 @@ module.exports = {
         user_phone,
       };
       const checkUser = await getUserById(id);
-      if (checkUser.length > 0) {
+      if (setData.user_phone.length < 10 || setData.user_phone.length > 12) {
+        return helper.response(
+          response,
+          400,
+          "Phone number must be 10-12 characters"
+        );
+      } else if (setData.first_name === "") {
+        return helper.response(response, 400, "Input your first name");
+      } else if (setData.last_name === "") {
+        return helper.response(response, 400, "Input your last name");
+      } else if (checkUser.length > 0) {
         const result = await patchUser(setData, id);
         return helper.response(response, 200, "Profile updated", result);
       } else {
         return helper.response(response, 404, `Profile By Id: ${id} Not Found`);
       }
     } catch (error) {
+      console.log(error);
       return helper.response(response, 400, "Bad Request", error);
     }
   },
