@@ -38,6 +38,7 @@ module.exports = {
   },
   postMidtransNotif: async (request, response) => {
     console.log("halo123");
+    // console.log("123arqi");
     const { user_id, user_phone, nominal } = request.body;
     let snap = new midTransClient.Snap({
       isProduction: false,
