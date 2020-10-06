@@ -40,67 +40,124 @@ DB_IP=127.0.0.1 // IP
 
 ## End Point
 
-**1. USER**
+**1. AUTH**
 
 - `/user/register`(Register New User)
 
-  - `{ "user_name":"roger", "user_email":"roger@gmail.com", "user_password":"Chatchy21!", "user_phone":"235467"}`
+  - `{ "user_email":"a1.arifrahman.1213@gmail.com", "user_password":"Pellet21!", "user_phone":"235467", "confirm_password: "Pellet21!"}`
 
-- `/user/login`(Login Account)
+- `/user/login`(Login User)
 
-  - `{ "user_email":"ijiq@gmail.com", "user_password":"Chatchy21!"}`
+  - `{ "user_email" : "a1.arifrahman.1213@gmail.com", "user_password" : "Pellet21!"}`
 
-- `/user/activation/:id`(Activate Account)
+- `/user/forgot/`(Forgot Password)
 
-- `/user/:id`(Get User by ID)
+  - `{ "user_email" : "a1.arifrahman.1213@gmail.com"}`
 
-- `/user/search/username`(Search user by username)
+- `/user/change/?keys=56756`(Change Password)
+  - params `{ "keys" : 56756}`
 
-  - `{ "user_name" : "nezuko" }`
+  - `{ "user_password" : 12341234, "confirm_password" : 12341234}`
 
-- `/user/search/usernickname`(Search user by nickname)
+- `/user/1`(Create New PIN)
+  - params `{ "user_id" : 1}`
 
-  - `{ "user_nickname" : "Ade Londok" }`
+  - `{ "pin" : 123456 }`
 
-- `/user/search/userphone`(Search user by phone number)
+- `/user/newpass/1`(Edit Password)
+  - params `{ "user_id" : 1}`
 
-  - `{ "user_phone" : 0854356 }`
+  - `{ "current_password" : 12341234, "user_password" : 123123, "confirm_password" : 123123}`
 
-- `/user/:id`(Edit Profile)
+- `/user/newpass/1`(Edit PIN)
+  - params `{ "user_id" : 1}`
 
-  - `{ "user_nickname" : "Djanbi Dumadi", "user_name" : "djanbi12", "user_email" : "djanbi@gmail.com" "user_password" : "Chatchy21!", "user_phone" : 08123713, "user_image" : {upload}, "user_bio" : "Halo Semua"}`
+  - `{ "user_pin" : 123457}`
 
-- `/user/password/reset/`(Reset Password)
+- `/user/checkpin/1`(Check PIN)
+  - params `{ "user_id" : 1}`
 
-  - `{ "user_email": "salsa@gmail.com", "user_password" : "Chatchy21!", "re_password": "Chatchy21!" }`
+  - `{ "user_pin" : 123457}`
 
-**2. MESSAGE**
+**2. PROFILE**
 
-- `/message/chat/`(Send a Message)
+- `/profile/?page=2&limit=3`(Get All User)
 
-  - `{ "message_sender": 1, "message_receiver": 2, "message_chat": "Kamu sekarang tinggal dimana ?" }`
+  - params `{ "page" : 2, "limit" : 3}`
 
-- `/message/delete/:id`(Delete a Message)
+- `/profile/7`(Get User By ID)
 
-- `/message/search/`(Send a Message)
+  - params `{ "user_id" : 7}`
 
-  - `{ "message_chat" : "hai", "sender" : 1, "receiver" : 2 }`
+- `/profile/image/2` (Patch Image User)
 
-- `/message/` (Get data Message)
+  - params `{ "user_id" : 2}`
 
-  - `{ "sender" : 11, "receiver" : 23 }`
+- `/profile/patch/2` (Patch User Profile)
 
-**3. CONTACT**
+  - params `{ "user_id" : 2}`
 
-- `/contact/:id`(Get Contact By Owner)
+  - `{ "user_name" : "skuyliving", "first_name" : "iqbal", "last_name" : "wanwan", "user_phone" : 0898989898}`
 
-- `/contact/delete`(Delete Contact)
+- `/profile/image/2` (Search User Profile)
 
-  - `{ "owner" : 15, "saved" : 19 }`
+  - params `{ "user_id" : 2}`
 
-- `/contact/addcontact`(Add Contact)
+- `/profile/optphone/1` (Add Optional Phone)
 
-  - `{ "owner" : 15, "saved" : 19 }`
+  - params `{ "user_id" : 1}`
+
+  - `{ "opt_phone" : 08982245678}`
+
+**3. PAYMENT**
+
+- `/payment/`(Topup Saldo Midtrans)
+
+  - `{ "id_topup" : 18, "nominal" : 100000}`
+
+- `/topup/`(Topup Dummy)
+
+  - `{ "user_id" : 7, "user_phone" : 08982245678, "nominal" : 100000}`
+
+**4. TRANSFER**
+
+- `/transfer/`(Transfer)
+
+  - `{ "id_topup" : 18, "nominal" : 100000}`
+
+- `/profile/search`(Search Receiver )
+
+  - `{ "search_name" : 0}`
+
+- `/pdf/pdf`(PDF download)
+
+
+**5. TRANSACTION**
+
+- `/transaction`(Get Data Transaction)
+
+  - `{ "user_id" : 1, "target_id" : 1, "date_from" : "2020/09/25", "date_to" : "2020/10/05" }`
+
+- `/transaction/income`(Get Income Total Interval)
+
+  - `{ "date" : "2020-10-01", "user" : 1 }`
+
+- `/transaction/income/day`(Get Income Per Day Interval)
+
+  - `{ "date" : "2020-10-01", "user" : 1 }`
+
+  - `/transaction/expense`(Get Expense Total Interval)
+
+  - `{ "date" : "2020-10-01", "user" : 1 }`
+
+- `/transaction/expense/day`(Get Expense Per Day Interval)
+
+  - `{ "date" : "2020-10-01", "user" : 1 }`
+
+- `/transaction/history`(Get Transaction History)
+
+  - `{ "user_id" : 8, "date_from" : "2020/09/25", "date_to" : "2020/10/05" }`
+
 
 **Documentation API**
 
