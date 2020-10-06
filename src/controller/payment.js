@@ -124,12 +124,15 @@ module.exports = {
             };
             const addTransaction = await postTransaction(setData2);
 
-            const getSaldo = await getUserSaldo(target_id);
+            const getSaldo = await getUserSaldo(setData2.target_id);
 
             const newSaldo = {
               user_saldo: Number(getSaldo) + Number(gross_amount),
             };
-            const updateUserSaldo = await updateSaldo(newSaldo, target_id);
+            const updateUserSaldo = await updateSaldo(
+              newSaldo,
+              setData2.target_id
+            );
 
             return helper.response(
               response,
