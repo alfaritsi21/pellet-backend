@@ -66,24 +66,43 @@ module.exports = {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
-  // postPayment: async (request, response) => {
-  //   try {
-  //     const { id_topup, nominal, user_id } = request.body;
+  postTopupMidtransDummy: async (request, response) => {
+    try {
+      const { id } = request.body;
+      // const { nominal, user_id } = request.body;
+      const setData = {
+        user_id: id,
+        topup_code: Math.floor(Math.random() * 1000000),
+      };
+      const result = await postTopup(setData);
+      // const checkTopupCode = await checkDataTopupCode(result.topup_code);
 
-  //     const checkTopupCode = await checkDataTopupCode(id_topup);
+      // const topUp = await createPayment(result.topup_code, nominal);
+      return helper.response(response, 200, "Success Create Payment !", result);
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  postPayment: async (request, response) => {
+    try {
+      const { id_topup, nominal } = request.body;
 
-  //     const topUp = await createPayment(id_topup, nominal);
-  //     return helper.response(
-  //       response,
-  //       200,
-  //       "Success Create Payment !",
-  //       checkDataTopupCode,
-  //       topUp
-  //     );
-  //   } catch (error) {
-  //     return helper.response(response, 400, "Bad Request", error);
-  //   }
-  // },
+      const checkTopupCode = await checkDataTopupCode(id_topup);
+
+      const topUp = await createPayment(id_topup, nominal);
+      console.log(topUp);
+
+      return helper.response(
+        response,
+        200,
+        "Success Create Payment !",
+        checkDataTopupCode,
+        topUp
+      );
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
   postMidtransNotif: async (request, response) => {
     let snap = new midTransClient.Snap({
       isProduction: false,
@@ -130,7 +149,7 @@ module.exports = {
             const result = await patchTopup(setData, order_id);
             const setData2 = {
               user_id: 1,
-              target_id: checkDataTopupCode[0].user_id,
+              target_id: checkTopupCode[0].user_id,
               trans_type: "Top Up",
               trans_nominal: gross_amount,
               created_at: transaction_time,

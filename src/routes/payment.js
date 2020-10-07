@@ -1,15 +1,17 @@
 const router = require("express").Router();
 const {
-  // postPayment,
+  postPayment,
   postMidtransNotif,
   getTopupData,
   getUserData,
   getTransactionData,
   postTopupMidtrans,
+  postTopupMidtransDummy,
 } = require("../controller/payment");
 
-// router.post("/", postPayment);
-router.post("/topup", postTopupMidtrans);
+router.post("/", postPayment);
+router.post("/topupmidtrans", postTopupMidtrans);
+router.post("/topupdummy", postTopupMidtransDummy);
 
 router.post("/midtrans-notif", postMidtransNotif);
 router.post("/topupdata", getTopupData);
