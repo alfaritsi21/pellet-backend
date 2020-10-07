@@ -7,11 +7,13 @@ const {
   getTransactionData,
   postTopupMidtrans,
   postTopupMidtransDummy,
+  cekCode,
 } = require("../controller/payment");
 
 router.post("/", postPayment);
 router.post("/topupmidtrans", postTopupMidtrans);
 router.post("/topupdummy", postTopupMidtransDummy);
+router.post("/cekcode", cekCode);
 
 router.post("/midtrans-notif", postMidtransNotif);
 router.post("/topupdata", getTopupData);

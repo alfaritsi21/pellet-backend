@@ -103,6 +103,16 @@ module.exports = {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
+  cekCode: async (request, response) => {
+    try {
+      const { topup_code } = request.body;
+      const result = await checkDataTopupCode(topup_code);
+      console.log(result[0].user_id);
+      return helper.response(response, 200, "Success Get Code !", result);
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
   postMidtransNotif: async (request, response) => {
     let snap = new midTransClient.Snap({
       isProduction: false,
@@ -141,12 +151,12 @@ module.exports = {
 
             const checkTopupCode = await checkDataTopupCode(order_id);
 
-            const setData = {
-              topup_nominal: gross_amount,
-              created_at: transaction_time,
-              topup_status: transaction_status,
-            };
-            const result = await patchTopup(setData, order_id);
+            // const setData = {
+            //   topup_nominal: gross_amount,
+            //   created_at: transaction_time,
+            //   topup_status: transaction_status,
+            // };
+            // const result = await patchTopup(setData, order_id);
             const setData2 = {
               user_id: 1,
               target_id: checkTopupCode[0].user_id,
