@@ -13,6 +13,7 @@ module.exports = {
       topup_nominal: nominal,
       created_at: new Date(),
       topup_status: chance === 1 ? "success" : null,
+      topup_code: Math.floor(Math.random() * 1000000),
     };
 
     const checkUser = await checkNumber(user_phone);
