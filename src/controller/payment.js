@@ -66,7 +66,7 @@ module.exports = {
       const { id, nominal } = request.body;
       const setData = {
         user_id: id,
-        topup_code: "id" + Math.floor(Math.random() * 10000),
+        topup_code: Math.floor(Math.random() * 10000),
       };
       const result = await postTopup(setData);
       const topUp = await createPayment(result.topup_code, nominal);
