@@ -5,6 +5,7 @@ const {
   patchUser,
   searchUserName,
   deletePhone,
+  deleteImage,
 } = require("../model/profile");
 
 // const { checkNumber } = require("../model/user");
@@ -223,6 +224,26 @@ module.exports = {
           "Your phone number deleted",
           result
         );
+      } else {
+        return helper.response(response, 404, ` Not Found`);
+      }
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
+  deleteImg: async (request, response) => {
+    try {
+      const { id } = request.params;
+      const checkId = await getUserById(id);
+      if (checkId.length > 0) {
+        fs.unlink(`./uploads/${checkId[0].user_img}`, async (error) => {
+          if (error) {
+            throw error;
+          } else {
+            const result = await deleteImage(id);
+            return helper.response(response, 201, "Image Deleted", result);
+          }
+        });
       } else {
         return helper.response(response, 404, ` Not Found`);
       }

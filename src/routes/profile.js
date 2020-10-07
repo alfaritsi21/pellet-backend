@@ -7,6 +7,7 @@ const {
   searchByUserName,
   addPhone,
   deleteOptPhone,
+  deleteImg,
 } = require("../controller/profile");
 const uploadImage = require("../middleware/multer");
 
@@ -20,5 +21,6 @@ router.post("/search", searchByUserName);
 router.patch("/optphone/:id", addPhone);
 
 router.delete("/delOpt/:id", deleteOptPhone);
+router.delete("/delimg/:id", deleteImg);
 
 module.exports = router;

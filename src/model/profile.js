@@ -109,4 +109,22 @@ module.exports = {
       );
     });
   },
+  deleteImage: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE user SET user_img = 'blank-profile.jpg' WHERE user_id = ?",
+        id,
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              id: id,
+            };
+            resolve(newResult);
+          } else {
+            reject(new Error(error));
+          }
+        }
+      );
+    });
+  },
 };
