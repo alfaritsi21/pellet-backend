@@ -62,6 +62,7 @@ module.exports = {
       //proses to database TOPUP
       // set data topupid,userId,nominal,status,created_at
       //   result
+      // result
       const { id, nominal } = request.body;
       const setData = {
         user_id: id,
