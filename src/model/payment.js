@@ -87,4 +87,33 @@ module.exports = {
       );
     });
   },
+  checkDataTopupCode: (topup_code) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT * FROM topup WHERE topup_code = ${topup_code}`,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
+  patchTopup: (setData, topup_code) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE topup SET ? WHERE topup_code = ?",
+        [setData, topup_code],
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              user_id: id,
+              ...setData,
+            };
+            resolve(newResult);
+          } else {
+            reject(new Error(error));
+          }
+        }
+      );
+    });
+  },
 };

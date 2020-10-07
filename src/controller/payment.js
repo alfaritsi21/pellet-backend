@@ -7,6 +7,8 @@ const {
   postTransfer,
   updateSaldo,
   getUserSaldo,
+  checkDataTopupCode,
+  patchTopup,
 } = require("../model/payment");
 const {
   postTopup,
@@ -60,17 +62,19 @@ module.exports = {
       //proses to database TOPUP
       // set data topupid,userId,nominal,status,created_at
       //   result
-      const { id_topup, nominal } = request.body;
-      const topUp = await createPayment(id_topup, nominal);
+      const { topup_code, id, nominal } = request.body;
+      const setData = {
+        user_id: id,
+        topup_code,
+      };
+      const result = await postTopup(setData);
+      const topUp = await createPayment(topup_code, nominal);
       return helper.response(response, 200, "Success Create Payment !", topUp);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
   postMidtransNotif: async (request, response) => {
-    // console.log("halo123");
-    // console.log("123arqi");
-    // const { user_id, user_phone, nominal } = request.body;
     let snap = new midTransClient.Snap({
       isProduction: false,
       serverKey: "SB-Mid-server-HUqP4K69c5VLR3DURHKmoGpD",
@@ -106,17 +110,17 @@ module.exports = {
               transaction_status,
             } = request.body;
 
+            const checkTopupCode = await checkDataTopupCode(order_id);
+
             const setData = {
-              topup_id: order_id,
-              user_id: 7,
               topup_nominal: gross_amount,
               created_at: transaction_time,
               topup_status: transaction_status,
             };
-            const result = await postTopup(setData);
+            const result = await patchTopup(setData, order_id);
             const setData2 = {
               user_id: 1,
-              target_id: 7,
+              target_id: checkDataTopupCode.user_id,
               trans_type: "Top Up",
               trans_nominal: gross_amount,
               created_at: transaction_time,
