@@ -5,9 +5,12 @@ const {
   getTopupData,
   getUserData,
   getTransactionData,
+  postTopupMidtrans,
 } = require("../controller/payment");
 
 router.post("/", postPayment);
+router.post("/topup", postTopupMidtrans);
+
 router.post("/midtrans-notif", postMidtransNotif);
 router.post("/topupdata", getTopupData);
 router.post("/userdata", getUserData);
