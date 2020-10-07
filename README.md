@@ -55,26 +55,46 @@ DB_IP=127.0.0.1 // IP
   - `{ "user_email" : "a1.arifrahman.1213@gmail.com"}`
 
 - `/user/change/?keys=56756`(Change Password)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 188af12b6c210477a8dc11a2e79788cfa38fc223
   - params `{ "keys" : 56756}`
 
   - `{ "user_password" : 12341234, "confirm_password" : 12341234}`
 
 - `/user/1`(Create New PIN)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 188af12b6c210477a8dc11a2e79788cfa38fc223
   - params `{ "user_id" : 1}`
 
   - `{ "pin" : 123456 }`
 
 - `/user/newpass/1`(Edit Password)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 188af12b6c210477a8dc11a2e79788cfa38fc223
   - params `{ "user_id" : 1}`
 
   - `{ "current_password" : 12341234, "user_password" : 123123, "confirm_password" : 123123}`
 
 - `/user/newpass/1`(Edit PIN)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 188af12b6c210477a8dc11a2e79788cfa38fc223
   - params `{ "user_id" : 1}`
 
   - `{ "user_pin" : 123457}`
 
 - `/user/checkpin/1`(Check PIN)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 188af12b6c210477a8dc11a2e79788cfa38fc223
   - params `{ "user_id" : 1}`
 
   - `{ "user_pin" : 123457}`
@@ -131,7 +151,6 @@ DB_IP=127.0.0.1 // IP
 
 - `/pdf/pdf`(PDF download)
 
-
 **5. TRANSACTION**
 
 - `/transaction`(Get Data Transaction)
@@ -158,7 +177,10 @@ DB_IP=127.0.0.1 // IP
 
   - `{ "user_id" : 8, "date_from" : "2020/09/25", "date_to" : "2020/10/05" }`
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 188af12b6c210477a8dc11a2e79788cfa38fc223
 **Documentation API**
 
 https://documenter.getpostman.com/view/12322442/TVRg9AnD
