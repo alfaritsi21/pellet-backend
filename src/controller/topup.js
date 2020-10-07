@@ -52,4 +52,27 @@ module.exports = {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
+  midtransTopup: async (request, response) => {
+    const { user_id, user_phone, nominal } = request.body;
+    const setData = {
+      user_id,
+      topup_nominal: nominal,
+      created_at: new Date(),
+      topup_status: "success",
+      topup_code: Math.floor(Math.random() * 1000000),
+    };
+
+    const checkUser = await checkNumber(user_phone);
+
+    try {
+      if (checkUser.length > 0) {
+        const result = await postTopup(setData);
+        return helper.response(response, 200, "Top up success", result);
+      } else {
+        return helper.response(response, 400, "Invalid phone number");
+      }
+    } catch (error) {
+      return helper.response(response, 400, "Bad Request", error);
+    }
+  },
 };
