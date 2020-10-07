@@ -51,60 +51,39 @@ module.exports = {
   },
   postTopupMidtrans: async (request, response) => {
     try {
-      // ==========NOMIDTRANS============
-      // model1
-      //proses to database TOPUP
-      // set data topupid,userId,nominal,created_at
-      //   model2
-      // update ke table user:user_saldo
-      //   ===========MIDTRANS=========
-      // model1
-      //proses to database TOPUP
-      // set data topupid,userId,nominal,status,created_at
-      //   result
-      // result
-      const { id } = request.body;
+      // const { id } = request.body;
+      const { nominal, user_id } = request.body;
       const setData = {
-        user_id: id,
+        user_id: user_id,
         topup_code: Math.floor(Math.random() * 1000000),
       };
       const result = await postTopup(setData);
-      // const topUp = await createPayment(result.topup_code, nominal);
-      return helper.response(response, 200, "Success Create Payment !", result);
+      const checkTopupCode = await checkDataTopupCode(result.topup_code);
+
+      const topUp = await createPayment(result.topup_code, nominal);
+      return helper.response(response, 200, "Success Create Payment !", topUp);
     } catch (error) {
       return helper.response(response, 400, "Bad Request", error);
     }
   },
-  postPayment: async (request, response) => {
-    try {
-      // ==========NOMIDTRANS============
-      // model1
-      //proses to database TOPUP
-      // set data topupid,userId,nominal,created_at
-      //   model2
-      // update ke table user:user_saldo
-      //   ===========MIDTRANS=========
-      // model1
-      //proses to database TOPUP
-      // set data topupid,userId,nominal,status,created_at
-      //   result
-      // result
-      const { id_topup, nominal, user_id } = request.body;
+  // postPayment: async (request, response) => {
+  //   try {
+  //     const { id_topup, nominal, user_id } = request.body;
 
-      const checkTopupCode = await checkDataTopupCode(id_topup);
+  //     const checkTopupCode = await checkDataTopupCode(id_topup);
 
-      const topUp = await createPayment(id_topup, nominal);
-      return helper.response(
-        response,
-        200,
-        "Success Create Payment !",
-        checkDataTopupCode,
-        topUp
-      );
-    } catch (error) {
-      return helper.response(response, 400, "Bad Request", error);
-    }
-  },
+  //     const topUp = await createPayment(id_topup, nominal);
+  //     return helper.response(
+  //       response,
+  //       200,
+  //       "Success Create Payment !",
+  //       checkDataTopupCode,
+  //       topUp
+  //     );
+  //   } catch (error) {
+  //     return helper.response(response, 400, "Bad Request", error);
+  //   }
+  // },
   postMidtransNotif: async (request, response) => {
     let snap = new midTransClient.Snap({
       isProduction: false,
